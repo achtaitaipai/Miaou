@@ -13,7 +13,7 @@
 
 ---
 
-## Summary
+## Sommaire
 
 - [Dire bonjour](#dire-bonjour)
 - [Un peu de conversation](#un-peu-de-conversation)

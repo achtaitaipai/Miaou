@@ -13,7 +13,7 @@
 
 ---
 
-## Summary
+## Sommaire
 
 - [Titre et couleurs](#titre-et-couleurs)
 - [Trigger](#trigger)

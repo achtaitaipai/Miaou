@@ -13,7 +13,7 @@
 
 ---
 
-## Summary
+## Sommaire
 
 - [General](#general)
 - [Navigation](#navigation)
