@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+
+	<style type="text/css">
+		
+/*style*/
+		
+	</style>
+</head>
+<body>
+<div id="corps">
+	<div id="titre">
+		<p>BOBY</p></div>
+	<div id="msgs">
+	</div>
+	<div id="console">
+		<div id="text" contenteditable="true"></div>
+	</div>
+</div>
+<script type="text/javascript">
+
+//tablo
+
+//miaou
+
+const separateur=" & ";
+const sousseparateur="--";
+
+
+var bot={
+	'prochainereponse' :'',
+
+	initierson:function (){
+		//créer player audio & fonction boucle
+		  bot.sonloop=false;
+		  bot.urlson;
+		  bot.myAudio = new Audio(); 
+		  bot.silence=false;
+		  bot.myAudio.addEventListener('ended', function() {
+		      if(bot.sonloop){
+		        this.currentTime = 0;
+		        this.play();
+		    }
+		  }, false);
+		bot.lancerson=false;
+	},
+
+	temps:function(texte){
+		var nomVars=[...texte['matchAll']('\\(\\([0-9]*\\)\\)')];
+		if(nomVars!=null){
+			for (var search = 0; search < nomVars.length; search++) {								
+				var nomVar=nomVars[search][0].replace("((","");
+				nomVar=nomVar.replace("))","");
+				if(nomVar!=null){
+					texte=texte.replace(nomVars[search][0],"");
+					nomVar=parseInt(nomVar);
+				}
+				return reponse={'temps':nomVar , 'texte':texte};
+			}
+				return reponse={'temps':0 , 'texte':texte}
+		}
+	},
+
+	repondre : function(texte,output){
+		if(bot.lancerson){
+            bot.myAudio.src=bot.urlson;
+            bot.myAudio.currentTime=0;
+            bot.myAudio.play();
+            bot.lancerson=false;
+          }
+        else if (bot.silence){
+        	bot.sonloop=false;
+        	bot.myAudio.pause();
+        }
+		var sortie=document.createElement('div');
+		sortie.className='bot';
+		sortie.innerHTML="<p>"+texte+"</p>";
+		output.appendChild(sortie);
+        output.scrollTop = output.scrollHeight;
+	},
+
+	discuter : function(input,output){
+		var requete=input.innerHTML;
+		var retour=miaou.chercher(requete);
+		var reponse=["miaou n'a pas trouvé de boite qui corresponde à la requête"];
+		var delai=0;
+		if(retour!=null){
+			reponse=retour.reponse;
+				if(retour.son!=null){
+	        	if(retour.son=="SILENCE")bot.silence=true
+	    		else{	
+	    			bot.urlson=retour.son;
+	                bot.sonloop=retour.loop;
+	                bot.lancerson=true;
+	            }
+	        }
+		}
+		var sortie=document.createElement('div');
+		sortie.className='usr';
+		sortie.innerHTML="<p>"+requete+"</p>";
+		output.appendChild(sortie);
+		input.innerHTML=" ";
+        output.scrollTop = output.scrollHeight;
+
+		for (var i = 0; i < reponse.length; i++) {
+			var traite=bot.temps(reponse[i]).texte;
+			delai=bot.temps(reponse[i]).temps*1000;
+			var temps=delai;
+			if(new Date().getTime()<this.prochainereponse){
+				if (delai==0)delai=100;
+				temps=delai+this.prochainereponse-new Date().getTime();
+			}
+			this.prochainereponse=temps+new Date().getTime();
+			var out=traite;
+			setTimeout(this.repondre,temps,out,output,output);
+		}
+	},
+}
+miaou.initier(dialogues);
+bot.initierson();
+	var inp = document.getElementById("text");
+	var out = document.getElementById("msgs");
+	inp.onkeydown = function (e) {
+		var code = (e.keyCode ? e.keyCode : e.which);
+			if (code == 13) {
+				e.preventDefault(); '';
+				bot.discuter(inp, out)
+			}
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="js/miaou.js"></script>
+
+		<style type="text/css">
+			html,
+			body {
+				height: 100vh;
+				width: 100vw;
+				margin: 0;
+				padding: 0;
+				overflow: hidden;
+				font-family: Verdana, monospace;
+			}
+			body {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				background-color: black;
+			}
+			#corps {
+				border: 1px solid black;
+				width: 30vw;
+				margin: 0;
+				padding: 0;
+				background-color: #fefefe;
+				border-radius: 3%;
+			}
+			#titre {
+				box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				-webkit-box-sizing: border-box;
+				border-bottom: 1px solid grey;
+				width: 100%;
+				color: black;
+				text-align: left;
+				padding-left: 1em;
+				height: 5vh;
+				font-weight: bold;
+			}
+			#titre p {
+				line-height: 90px height 90px;
+			}
+			#msgs {
+				height: 70vh;
+				display: flex;
+				flex-direction: column;
+				flex-direction: flex-start;
+				padding: 5%;
+				border-top: 10px solid grey;
+				overflow-y: auto;
+				margin-bottom: 1em;
+			}
+			.bot,
+			.usr {
+				padding: 0em 0.6em;
+				max-width: 40%;
+				margin-bottom: 1em;
+			}
+			.usr {
+				margin-left: auto;
+				background-color: #4cd964;
+				border-radius: 0.5em 0 0.5em 0.5em;
+			}
+			.bot {
+				background-color: #f0f0f0;
+				border-radius: 0 0.5em 0.5em 0.5em;
+			}
+			#console {
+				border-top: 1px solid grey;
+				display: flex;
+				justify-content: space-around;
+				border-radius: 1%;
+				padding: 1em;
+			}
+			#text {
+				word-break: break-all;
+				outline: none;
+				width: 90%;
+				border-bottom: 2px solid #009cff;
+				line-height: 90px height 90px;
+			}
+			#envoyer {
+				background-color: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="corps">
+			<div id="titre">
+				<p>BOBY</p>
+			</div>
+			<div id="msgs">
+				<div class="usr"><p>ok</p></div>
+				<div class="bot"><p>dac</p></div>
+			</div>
+			<div id="console">
+				<div id="text" contenteditable="true">okokoko</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			//tablo
+			var dialogues = [
+				{
+					nom: 'bonjour',
+					declencheur: ['bonjour', 'salut', 'coucou'],
+					reponse: 'bonjour',
+					identifiant: '1578141280007',
+					suite: [],
+					son: 'papa.ogg',
+					loop: 'ontablo',
+				},
+				{
+					nom: 'comment va',
+					declencheur: ['comment.*va'],
+					reponse: 'comme un chat-rme et toi ?',
+					identifiant: '1578141347801',
+					suite: [
+						{ nom: 'bien', declencheur: ['super'], reponse: 'super', identifiant: '1578141347807', suite: [] },
+						{ nom: 'bof', declencheur: ['bof'], reponse: 'navré', identifiant: '1578141347857', suite: [] },
+						{ nom: 'bof', declencheur: ['test'], reponse: 'ok', identifiant: '1578141347257', suite: [] },
+					],
+				},
+				{
+					nom: 'présentation',
+					declencheur: ['qui.*tu', 'comment.*appelle', 'quel.*nom', 'quel.*prénom'],
+					reponse: 'miaou',
+					identifiant: '1578141359349',
+					suite: [],
+				},
+				{ nom: 'rien', declencheur: ['prout'], reponse: "je n'ai pas compris", identifiant: '1578141369219', suite: [] },
+			]
+			const separateur = ' & '
+			const sousseparateur = '--'
+
+			var bot = {
+				prochainereponse: '',
+
+				initierson: function () {
+					//créer player audio & fonction boucle
+					bot.sonloop = false
+					bot.urlson
+					bot.myAudio = new Audio()
+					bot.silence = false
+					bot.myAudio.addEventListener(
+						'ended',
+						function () {
+							if (bot.sonloop) {
+								this.currentTime = 0
+								this.play()
+							}
+						},
+						false
+					)
+					bot.lancerson = false
+				},
+
+				temps: function (texte) {
+					var nomVars = [...texte['matchAll']('\\(\\([0-9]*\\)\\)')]
+					if (nomVars != null) {
+						for (var search = 0; search < nomVars.length; search++) {
+							var nomVar = nomVars[search][0].replace('((', '')
+							nomVar = nomVar.replace('))', '')
+							if (nomVar != null) {
+								texte = texte.replace(nomVars[search][0], '')
+								nomVar = parseInt(nomVar)
+							}
+							return (reponse = { temps: nomVar, texte: texte })
+						}
+						return (reponse = { temps: 0, texte: texte })
+					}
+				},
+
+				repondre: function (texte, output) {
+					if (bot.lancerson) {
+						bot.myAudio.src = bot.urlson
+						bot.myAudio.currentTime = 0
+						bot.myAudio.play()
+						bot.lancerson = false
+					} else if (bot.silence) {
+						bot.sonloop = false
+						bot.myAudio.pause()
+					}
+					var sortie = document.createElement('div')
+					sortie.className = 'bot'
+					sortie.innerHTML = '<p>' + texte + '</p>'
+					output.appendChild(sortie)
+					output.scrollTop = output.scrollHeight
+				},
+
+				discuter: function (input, output) {
+					var requete = input.innerHTML
+					var retour = miaou.chercher(requete)
+					var reponse = ["miaou n'a pas trouvé de boite qui corresponde à la requête"]
+					var delai = 0
+					if (retour != null) {
+						reponse = retour.reponse
+						if (retour.son != null) {
+							if (retour.son == 'SILENCE') bot.silence = true
+							else {
+								bot.urlson = retour.son
+								bot.sonloop = retour.loop
+								bot.lancerson = true
+							}
+						}
+					}
+					var sortie = document.createElement('div')
+					sortie.className = 'usr'
+					sortie.innerHTML = '<p>' + requete + '</p>'
+					output.appendChild(sortie)
+					input.innerHTML = ' '
+					output.scrollTop = output.scrollHeight
+
+					for (var i = 0; i < reponse.length; i++) {
+						var traite = bot.temps(reponse[i]).texte
+						delai = bot.temps(reponse[i]).temps * 1000
+						var temps = delai
+						if (new Date().getTime() < this.prochainereponse) {
+							if (delai == 0) delai = 100
+							temps = delai + this.prochainereponse - new Date().getTime()
+						}
+						this.prochainereponse = temps + new Date().getTime()
+						var out = traite
+						setTimeout(this.repondre, temps, out, output, output)
+					}
+				},
+			}
+			miaou.initier(dialogues)
+			bot.initierson()
+			var inp = document.getElementById('text')
+			var out = document.getElementById('msgs')
+			inp.onkeydown = function (e) {
+				var code = e.keyCode ? e.keyCode : e.which
+				if (code == 13) {
+					e.preventDefault()
+					;('')
+					bot.discuter(inp, out)
+				}
+			}
+		</script>
+	</body>
+</html>

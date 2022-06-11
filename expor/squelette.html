@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+
+	<style type="text/css">
+		
+/*style*/
+		
+	</style>
+</head>
+<body>
+<div id="container">
+	<div id="title"></div>
+	<div id="msgs">
+	</div>
+	<div id="console">
+		<div id="text" contenteditable="true"></div><button id="send">></button>
+	</div>
+</div>
+<script type="text/javascript">
+
+//tablo
+//par
+//miaou
+
+parametres=parametres[0];
+const separateur=" & ";
+const sousseparateur="--";
+
+var bot={
+	'prochainereponse' :'',
+
+	initierson:function (){
+		//créer player audio & fonction boucle
+		  bot.sonloop=true;
+		  bot.urlson;
+		  
+		  bot.myAudio = new Audio(); 
+		  bot.silence=false;
+		  bot.myAudio.addEventListener('ended', function() {
+		      if(bot.sonloop){
+		        this.currentTime = 0;
+		        this.play();
+		    }
+		  }, false);
+		bot.lancerson=false;
+		bot.urlbruit;
+		bot.bruit = new Audio();
+		bot.lancerbruit=false;
+		bot.img;
+		bot.tag;
+		bot.couleur;
+	},
+
+	find:function(template, marker1,marker2) {
+		var fin=false;
+		var txt=template;
+		var retour=new Array();
+		while(!fin){
+			var result=[];
+		    var i1 = txt.indexOf( marker1 );
+		    var i2 = txt.indexOf( marker2 );
+		    if(i1==-1||i2==-1){
+		    	fin=true;
+		    	break;
+		    }else{
+			    i1+=marker1.length;
+			    result.entre=txt.substring(i1,i2);
+			    i1-=marker1.length;
+			    i2+=marker2.length;
+			    result.tout=txt.substring(i1,i2);
+			    txt=txt.substring(i2,txt.length)
+			    retour.push(result);
+			}
+		}
+		if(retour.length)return retour;
+		else return false;
+
+	},
+
+	temps:function(texte){
+		var nomVars=bot.find(texte,"((","))");
+		if(nomVars!=null){
+			for (var search = 0; search < nomVars.length; search++) {								
+				var nomVar=nomVars[search];
+				if(nomVar!=null){
+					texte=texte.replace(nomVar.tout,"");
+					nomVar=parseInt(nomVar.entre);
+				}
+				return retour={'temps':nomVar , 'texte':texte};
+			}
+				return retour={'temps':0 , 'texte':texte}
+		}
+	},
+
+	repondre : function(out,output,tag){
+		if(bot.lancerson){
+            bot.myAudio.src=bot.urlson;
+            bot.myAudio.currentTime=0;
+            bot.myAudio.play();
+            bot.lancerson=false;
+          }
+        else if (bot.silence){
+        	bot.sonloop=false;
+        	bot.myAudio.pause();
+        	bot.silence=false;
+        }
+        if(bot.lancerbruit){
+            bot.bruit.src=bot.urlbruit;
+            bot.bruit.currentTime=0;
+            bot.bruit.play();
+            bot.lancerbruit=false;
+          }
+        document.body.className=tag;
+        var style="";
+        if(bot.couleur!=null){
+        	if(parametres.colorto=="answer")
+        		style='style="color: '+bot.couleur+'"';
+        	else if (parametres.colorto=="background")
+        		document.body.style.backgroundColor=bot.couleur;
+        }
+		var sortie=document.createElement('div');
+		sortie.className='bot '+tag;
+		sortie.innerHTML="";
+		var imghtml=""
+		if(bot.img!=null){
+			var elems=document.querySelectorAll(".lastimg");
+			[].forEach.call(elems,function(el){
+				el.classList.remove("lastimg")
+			});
+			imghtml+="<a href='"+bot.img+"'class='lastimg' target='_blank'>"+"<img src='"+bot.img+"'></a>";
+			bot.img=null;
+		}
+		sortie.innerHTML+=imghtml+"<p "+style+"><span class='botname'>"+parametres.botname+"</span>"+out+"</p>";
+		output.appendChild(sortie);
+  		scrollbottom();
+	},
+
+	discuter : function(input,output){
+		var requete=input.innerHTML;
+		var retour=miaou.chercher(requete);
+		var delai=0;
+		var tag="";
+		reponse=[parametres.defaultanswer];
+		if(retour!=null){
+			reponse=retour.reponse;
+				if(reponse[0]!="NOTHING"){
+					if(retour.son!=null){
+			        	if(retour.son=="SILENCE")bot.silence=true
+			    		else{	
+			    			bot.urlson=retour.son;
+			                bot.sonloop=true;
+			                bot.lancerson=true;
+			            }
+		        	}
+		        	if(retour.bruit!=null){
+		    			bot.urlbruit=retour.bruit;
+		                bot.lancerbruit=true;
+		        	}
+		        	bot.img=retour.image;
+		        	tag=retour.tag;
+		        	bot.couleur=retour.couleur;
+		        }
+		}
+		var sortie=document.createElement('div');
+		sortie.className='usr';
+		sortie.innerHTML="<p> <span class='usrname'>"+parametres.usrname+"</span>"+requete+"</p>";
+		output.appendChild(sortie);
+		input.innerHTML="";
+		scrollbottom();
+		if(reponse[0]=="NOTHING") return;
+
+		for (var i = 0; i < reponse.length; i++) {
+			var reponseclean=bot.temps(reponse[i]);
+			var traite=reponseclean.texte;
+			delai=reponseclean.temps*1000+parseInt(parametres.defaulttime)*1000;
+			var temps=delai;
+			if(new Date().getTime()<this.prochainereponse){
+				if (delai==0)delai=100;
+				temps=delai+this.prochainereponse-new Date().getTime();
+			}
+			this.prochainereponse=temps+new Date().getTime();
+			
+			var out=traite;
+			setTimeout(this.repondre,temps,out,output,tag);
+		}
+	},
+}
+miaou.initier(dialogues);
+bot.initierson();
+
+window.onload=function(){
+	//auto focus
+	document.getElementById("text").focus();
+	//charger titre
+	document.querySelector("#title").innerHTML=parametres.title;
+	document.title=parametres.title;
+
+	//créer message du paramètre "begin"
+	if(parametres.begin!=null&&parametres.begin!=""){
+		var sortie=document.createElement('div');
+		var output=document.querySelector("#msgs");
+		sortie.className='bot';
+		sortie.innerHTML="";
+		sortie.innerHTML+="<p><span class='botname'>"+parametres.botname+"</span>"+parametres.begin+"</p>";
+		document.querySelector("#msgs").appendChild(sortie);
+  		scrollbottom();
+  		//sortie.scrollIntoView();
+		//document.querySelector("#msgs").scrollTop = document.querySelector("#msgs").scrollHeight;
+	}
+	var inp = document.getElementById("text");
+	var out = document.getElementById("msgs");
+	var button = document.getElementById("send");
+	inp.onkeydown = function (e) {
+		var code = (e.keyCode ? e.keyCode : e.which);
+			if (code == 13) {
+				e.preventDefault(); '';
+				bot.discuter(inp, out)
+			}
+	}
+	button.onclick=function(){
+		bot.discuter(inp,out);
+	}
+}
+
+function scrollbottom(){
+	var scrollingElement = document.getElementById("msgs");
+	scrollingElement.scrollTop = scrollingElement.scrollHeight;
+}
+
+</script>
+</body>
+</html>

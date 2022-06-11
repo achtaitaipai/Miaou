@@ -1,0 +1,491 @@
+<!DOCTYPE html><html><head>
+  <meta charset="utf-8">
+
+  <script src="js/jquery.js"></script>
+  <script src="js/jqueryui.js"></script>
+  <script src="js/jqueryuitouch.js"></script>
+  <script src="js/miaou.js"></script>
+  <script src="js/donnees.js"></script>
+  <script src="js/actions.js"></script>
+  <script src="js/fichiers.js"></script>
+  <script src="js/style.js"></script>
+  <script src="js/interactionssouris.js"></script>
+  <script src="js/interactionsclavier.js"></script>
+  <script src="js/bot.js"></script>
+  <script src="lib/codemirror.js"></script>
+  
+<link rel="stylesheet" href="lib/codemirror.css">
+<script src="mode/css/css.js"></script>
+
+
+  <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:400,700&amp;display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <!--<link rel="stylesheet" type="text/css" href="logo.css"> -->
+  <link rel="stylesheet" type="text/css" href="css/entypo.css">
+  <link rel="stylesheet" type="text/css" href="css/entypo-codes.css">
+  <link rel="stylesheet" type="text/css" href="css/entypo-embedded.css">
+  <title>Miaou Editor</title>
+</head>
+
+<body class="editmode">
+  <div id="grille">
+  <div id="shadow" class="editmode"></div>
+    <div id="boutons" class="editmode">
+      <ul id="menu">
+        <li class="levelun fichier editmode"><a class="volet editmode file">file</a>
+          <ul>
+            <li><a id="nouveau"><!--<span class="icons icon-doc-inv"></span>-->new</a></li>
+            <input type="file" id="fichier" style="display: none">
+            <li><a id="ouvrir"><!--<span class="icons icon-folder-open"></span>-->open</a></li>
+            <li><a id="telecharger"><!--<span class="icons icon-download"></span>-->download</a></li>
+          </ul>
+        </li><!--
+        --><li class="levelun fichier editmode tools"><a class="volet editmode tools">tools</a>
+          <ul>
+            <li><a data=".main" class="checked">main</a></li>
+            <li><a data=".condition">condition</a></li>
+            <li><a data=".variables">variables</a></li>
+            <li><a data=".links">links</a></li>
+            <li><a data=".image">image</a></li>
+            <li><a data=".sounds">sounds</a></li>
+            <li><a data=".tags">tags</a></li>
+          </ul>
+        </li><!--
+        --><li class="levelun fichier editmode"><a class="volet editmode examples">examples</a>
+          <ul>
+            <li><a>main</a>
+              <ul>
+                <li><a data="pileouface.js" class="exemple">mode random</a></li>
+                <li><a data="loop.js" class="exemple">mode loop</a></li>
+                <li><a data="rebonjour.js" class="exemple">mode à la suite</a></li>
+                <li><a data="sousreponses.js" class="exemple">sous-réponses</a></li>
+                <li><a data="temps.js" class="exemple">temps de réponse</a></li>
+              </ul>
+            </li>
+            <li><a>variables</a>
+              <ul>
+                <li><a data="questions.js" class="exemple">string</a></li>
+                <li><a data="test.js" class="exemple">flags</a></li>
+              </ul>
+            </li>
+            <li><a>conditions</a>
+              <ul>
+                <li><a data="pasbonjour.js" class="exemple">dire bonjour</a></li>
+              </ul>
+            </li>
+            <li><a>variables pré-définies</a>
+              <ul>
+                <li><a data="date.js" class="exemple">date</a></li>
+                <li><a data="perroquet.js" class="exemple">perroquet</a></li>
+              </ul>
+            </li>
+            <li><a>liens</a>
+              <ul>
+                <li><a data="liens.js" class="exemple">basic</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li><!--
+        --><li class="levelun fichier editmode"><a href="doc/" target="_blank" class="volet editmode doc">doc</a></li>
+      </ul>
+    </div>
+
+
+      
+    <div id="naviguation">
+      
+
+
+      <div id="boites">
+
+        <div id="location" class="editmode">
+
+          <div id="home">
+            <div class="icons icon-home"></div>
+          </div>
+          <div id="retour">
+            <div class="icons icon-left-big"></div>
+          </div>
+          <div id="info">path : </div>
+          <div id="chemin">/</div>
+        </div>
+        <div id="box-container">
+          <ul id="listeboites" class="editmode visible">
+          </ul>
+        </div>
+        <div id="creer" class="editmode">
+          <div class="bouton">
+            <span class="icons icon-plus"></span>
+          </div>
+        </div>
+      </div>
+
+      <div id="plusmoins" class="editmode">
+        <button hidden id="moins" class="edit-bar"><span class="icons icon-trash-empty"></span></button>
+        <button id="stylesheet" class="edit-bar"><span class="icons icon-code"></span></button>
+        <button id="setting" class="edit-bar"><span class="icons icon-cog"></span></button>
+        <button id="back" class="edit-bar"><span class="icons icon-left-big"></span></button>
+        <button hidden id="plus" class="edit-bar"><span class="icons icon-plus"></span></button>
+      </div>
+    </div>
+    <iframe id="preview"></iframe>
+    <div id="formulaire" class="formulaire editmode">
+      <fieldset id="tout">
+        <form>
+          <div class="visible formulaire-box">
+            <input type="text" class="title editmode" name="nom" id="nom">
+
+<div class="couleurs editmode">
+  <div data-col="#8f88f9" class="select"></div>
+  <div data-col="#ff5b66" ></div>
+  <div data-col="#5bd3ff" ></div>
+  <div data-col="#ffd366" ></div>
+  <div data-col="#000000" ></div>
+  <div data-col="#ffffff" ></div>
+</div>
+<input name="couleur" hidden type="color" id="couleur" value="#8f88f9">
+
+          </div>
+          <div class="main visible formulaire-box">
+            <button class="accordion active editmode" type="button"><b class="icons icon-comment"></b>main <span>▾</span></button>
+            <div class="section editmode" style="display: block;">
+              <label><span class="icons icon-comment-empty"></span>trigger : </label><input type="text" name="declencheur" class="to-fill editmode" id="declencheur">
+              <div class="help">
+                <p class="aide">
+                  Select one or several key words and separate them with a <b> & </b>.
+                  The box will be triggered if the player enters one of his key words. You can also use special expressions:
+                  <ul class="aide">
+                    <li class="aide"><b>.*</b> for any sequence of characters</li class="aide">
+                    <li class="aide"><b>^</b> at the beginning of a word, if that word has to be at the beginning of the sentence</li class="aide">
+                    <li class="aide"><b>$</b> at the end of a word, if it has to be at the end of the sentence</li class="aide">
+                </ul>
+                  <p class="aide">Many others are possible; enquire about regular expressions if they are of interest.</p>
+              </p>
+            </div>
+              <label><span class="icons icon-chat-empty"></span>answer : </label>
+              <div name="reponse" class="to-fill editmode txta" id="reponse" contenteditable="true" ></div>
+              <!--<input type="text" name="reponse" class="to-fill editmode" id="reponse">-->
+              <div class="help">
+                <p class="aide">
+                  Type one or several answers which the bot will be able to return to the player if this box is triggered. Separate each of your answers with<b> & </b>.
+                  Separate the parts with <b>--</b>.
+                  to divide your answers. If you want the bot to take 3 seconds to answer, add <b>((3))</b> to your answer. The bot will choose its answer according to the mode which will have been selected below.
+                </p>
+              </div>
+              <table class="check-boxes">
+                <tr>
+                  <th><span class="icons icon-shuffle"></span><input class="mode" type="radio" value="random" name="mode"></th>
+                  <th><span class="icons icon-loop"></span><input class="mode" type="radio" value="loop" name="mode"></th>
+                  <th><span class="icons icon-level-down"></span><input class="mode" type="radio" value="suite" name="mode"></th>
+                </tr>
+              </table>
+            <div class="help">
+
+               <p class="aide">Random: the bot will choose an answer at random<br>
+                Loop: the bot will choose the first answer, then the second and so on until it
+returns to the first when all answers have been read<br>
+Sequential: the bot will choose the first answer, then the second etc. and will
+remain on the last one until all answers have been read</p>
+            </div>
+            </div>
+          </div>
+
+
+          <div class="condition formulaire-box">
+            <button class="accordion editmode" type="button"><b class="icons icon-attention-circled"></b>condition<span>▾</span></button>
+            <div class="section editmode"style="display: block;">
+              <label>if : </label><input type="text" name="si" class="to-fill editmode" id="si">
+              <p class="error">
+                This condition is incorrect. Check your syntax.
+              </p>
+            <div class="help">
+
+              <p class="aide">
+                Add additional conditions in order for this box to be open, as per the following examples
+                <ul class="aide">
+                  <li class="aide">The 'hello' flag is necessary: <b>[hello]>0</b></li class="aide">
+                  <li class="aide">The 'hello' flag and the 'hi' flag are necessary: <b>[hello]>0 && [hi]>0</b></li class="aide">
+                  <li class="aide">If you need to have at least 3 'hello' flags: <b>[hello]>=3</b></li class="aide">
+                  <li class="aide">If, on the contrary, you need not to have the 'hello' flag: <b>[bonjour]<1</b></li class="aide">
+              </ul>
+              </p>
+            </div>
+            </div>
+
+          </div>
+
+
+
+          <div class="variables formulaire-box">
+            <button class="accordion editmode" type="button"><b class="icons icon-flag"></b>variables <span>▾</span></button>
+            <div class="section editmode"style="display: block;">
+              <label><span class="icons icon-flag-empty"></span>flag : </label><input type="text" name="drapeau" class="to-fill editmode" id="drapeau">
+           <div class="help">
+
+              <p class="aide">
+                Flags enable the bot to remember if your user has already opened this box. Name your flag as you wish, you will then be able to use it within a condition to open another box. The flags which have the same name can be added together and you can indeed display the number of similar flags held by the user within an answer, as per this example using the 'hello' flag: you have already said hello <b>[hello]</b> times.
+              </p>
+            </div>
+              <label><span class="icons icon-quote"></span>string : </label><input type="text" name="variable" class="to-fill editmode" id="variable">
+           <div class="help">
+
+              <p class="aide">
+                String enables you to remember the next answer of the player. Give it a name in order to use it in another box. For example, in a box 'what is your name?' you can memorise the player’s answer and call it 'name'. In an answer, you can integrate it as follows: I know your name, <b>[name]</b>
+              </p>
+            </div>
+
+            <label>operation : </label><input type="text" name="operation" class="to-fill editmode" id="operation">
+
+              <p class="error">
+                This operation is incorrect. Check your syntax.
+              </p>
+            <div class="help">
+
+              <p class="aide">
+                Add the operations which need to be applied to the variables, as in the following examples.
+                <ul class="aide">
+                  <li class="aide">'life' equals 5: <b>[life]=5</b></li class="aide">
+                  <li class="aide">Add 10 to 'money' : <b>[money]=[money]+10</b></li class="aide">
+                  <li class="aide">Remove 3 from 'life' : <b>[life]=[life]-3</b></li class="aide">
+                  <li class="aide">Define 'mood' as content: <b>[mood]="content"</b></li class="aide">
+                  <li class="aide">Add 10 to 'money' and remove 3 to 'life' : <b>[life]=[life]-3; [money]=[money]+10</b></li class="aide">
+
+              </ul>
+              </p>
+            </div>
+
+            </div>
+
+          </div>
+
+          <div class="links formulaire-box">
+            <button class="accordion editmode" type="button"><b class="icons icon-link"></b>links <span>▾</span></button>
+            <div class="section editmode"style="display: block;">
+              <!--<label><span class="icons icon-link"></span>liable : </label><input type="checkbox" name="liable" id="liable">
+              <label>lien</label><select name="lien" id="lien">
+                <option value="">aucun</option>
+              </select> -->
+              <input type="hidden" name="tag" class="to-fill editmode" id="lien">
+              <label>link</label>
+              <input list="lienlist" name="tag" class="to-fill editmode" id="nomlien" autocomplete="off">
+              <p class="error">
+                This box doesn't exist. Please check the name of the box.
+              </p>
+            <div class="help">
+<!-- TODO -->
+              <p class="aide">
+                You can link this box to the content of another box, by typing the name of this latter box above.
+              </p>
+            </div>
+            <datalist id="lienlist">
+            </datalist>
+            </div>
+
+          </div>
+
+          <div class="image formulaire-box">
+            <button class="accordion editmode" type="button"><b class="icons icon-picture-1"></b>image <span>▾</span></button>
+            <div class="section editmode"style="display: block;">
+              <label>url : </label><input type="text" name="image" class="to-fill editmode" id="image">
+            <div class="help">
+
+              <p class="aide">
+                Type above the url of a picture in order for it to be displayed when the box is opened.
+              </p>
+            </div>
+            </div>
+          </div>
+
+          <div class="sounds formulaire-box">
+            <button class="accordion editmode" type="button"><b class="icons icon-note-beamed"></b>sound <span>▾</span></button>
+            <div class="section editmode"style="display: block;">
+              <label>music url : </label><input type="text" name="son" class="to-fill editmode" id="son">
+          <div class="help">
+
+              <p class="aide">
+                Type above the url of a sound which will be emitted in a loop when the box is opened When a sound is emitted, the current sound is interrupted. In order to interrupt a sound without emitting a new one, type <b>"SILENCE"</b>
+              </p>
+            </div>
+              <label>sound url : </label><input type="text" name="bruit" class="to-fill editmode" id="bruit">
+            <div class="help">
+
+              <p class="aide">
+                Type above the url of a noise which will be emitted each time the box is opened
+              </p>
+            </div>
+            </div>
+          </div>
+          
+          
+
+          <div class="tags formulaire-box">
+            <button class="accordion editmode" type="button"><b class="icons icon-tag"></b>tags <span>▾</span></button>
+            <div class="section editmode"style="display: block;">
+            <!-- <label><span class="icons icon-quote"></span>tag : </label><input type="text" name="tag" class="to-fill editmode" id="tag">
+            -->
+            <label><span class="icons icon-quote"></span>tag : </label>
+            <input list="taglist" name="tag" class="to-fill editmode" id="tag" autocomplete="off">
+            <datalist id="taglist">
+            </datalist>
+                          <div class="help">
+
+            <p class="aide">
+              Tags allow you to organise your boxes as you wish. They can also enable you to display boxes with different settings. 
+            </p>
+          </div>
+            </div>
+          </div>
+        <button id="moins" class="edit-bar" type="button"><span class="icons icon-trash-empty"></span></button>
+          
+        </form>
+
+      </fieldset>
+    </div>
+    <div id="formulaireCSS" class="formulaire editmode" >
+      <select id="theme">
+        <option disabled selected value>pick a theme</option>
+        <option value="expor/game.css" >Game</option>
+        <option value="expor/sms.css" >Sms</option>
+        <option value="expor/terminal.css" >Terminal</option>
+        <option value="expor/terminal2.css" >Terminal2</option>
+        <option value="expor/ocean.css" >Ocean</option>
+        <option value="expor/vide.css">Minimal</option>
+      </select>
+    </div>
+    <div id="formulaireParametres">
+      <form>
+        <label>title</label><input type="text" name="titre" id="title" class="to-fill editmode">
+        <div class="help">
+                <p class="aide">
+                  title of the chatbot
+              </p>
+        </div>
+        <label>default answer</label><input type="text" name="defaultanswer" id="defaultanswer" class="to-fill editmode">
+        <div class="help">
+                <p class="aide">
+                  answer displayed when no box is found.
+              </p>
+        </div>
+        <label>users name</label><input type="text" name="usrname" id="usrname" class="to-fill editmode">
+        <div class="help">
+                <p class="aide">
+                  name in front of the user’s answers
+              </p>
+        </div>
+        <label>bots name</label><input type="text" name="botname" id="botname" class="to-fill editmode">
+        <div class="help">
+                <p class="aide">
+                  name in front of the bot answers
+              </p>
+        </div>
+        <label>default time</label><input type="number" min="0" name="defaulttime" id="defaulttime" class="to-fill editmode">
+        <div class="help">
+                <p class="aide">
+                  Minimum time before the bot answers.<br>
+                  The time indicated in the boxes will be added to this period of time
+              </p>
+        </div>
+        <label>begin</label><input type="text" name="begin" id="begin" class="to-fill editmode">
+        <div class="help">
+                <p class="aide">
+                  Sentence of the bot before the start of the discussion.
+              </p>
+        </div>
+        <label>apply color to</label><select id="colorto" class="to-fill editmode">
+        <option value="">nothing</option>
+          <option>answer</option>
+          <option>background</option>
+        </select>
+        <div class="help">
+                <p class="aide">
+                  Where to apply the colors specified in the boxes.
+              </p>
+        </div>
+      </form>
+    </div>
+    <div id="console">
+      <button id="parler" class="play-button"><span class="icons icon-play-circled"></span>play</button>
+      <div id="chat">
+        <button>x</button>
+        <div id="output">
+          <p></p>
+
+          <textarea autofocus="" placeholder="Type command..."></textarea>
+        </div><br>
+      </div>
+    </div>
+  </div>
+
+<script type="text/javascript">
+  var tableau =[
+    {
+    'nom' : 'bonjour',
+    'declencheur':["bonjour","salut","coucou"], 
+    'reponse':"bonjour",
+    'identifiant':'1578141280007',
+    "suite":[],
+    },
+    {
+    'nom' : 'comment va',
+    'declencheur':["comment.*va"], 
+    'reponse':"comme un chat-rme et toi ?",
+    'identifiant':'1578141347801',
+    'suite':[
+          {
+            'nom' : 'bien',
+            'declencheur' :["super"], 
+            'reponse' : 'super',
+            'identifiant':'1578141347807',
+            "suite":[],
+            "lien":"retour",
+          },
+          {
+            'nom' : 'bof',
+            'declencheur' :["bof"], 
+            'reponse' : 'navré',
+            'identifiant':'1578141347857',
+            "suite":[],
+            "lien":"retour",
+          },
+        ]
+    },
+    {
+    'nom' : 'présentation',
+    'declencheur':["qui.*tu","comment.*appelle","quel.*nom","quel.*prénom"], 
+    'reponse':"miaou",
+    'identifiant':'1578141359349',
+    "suite":[],
+    },
+    {
+    'nom' : 'rien',
+    'declencheur':[".*"], 
+    'reponse':"je n'ai pas compris",
+    'identifiant':'1578141369219',
+    "suite":[]
+    }
+  ]
+
+const boitevide={'nom' : '', 'couleur' : '', 'declencheur':'', 'reponse':"", 'mode':"random", 'drapeau':"", 'si':'', 'identifiant':'', 'suite':[], 'lien':'', 'variable':"", 'temps':"", 'son':"", 'loop':"", 'image':"", 'tag':"",};
+const separateur=" & ";
+const sousseparateur="--";
+var parametres={
+  'title':'no-title',
+  'defaultanswer':"I didn't understand",
+  'usrname':'user : ',
+  'botname':'miaou : ',
+  'defaulttime':0,
+  'begin':'',
+  'colorto':'',
+}
+var playmode=false,cssmode=false;
+var myCodeMirror;
+var theme=lirefichier("expor/vide.css");
+
+// boite sélectionnée, 
+  var selection;
+  donnees.initier(tableau); 
+  actulisteboites();
+  selectionner($('#listeboites li').eq(0));
+</script>
+</html>

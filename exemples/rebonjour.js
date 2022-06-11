@@ -1,0 +1,1 @@
+var dialogues = [{"nom":"bonjour","couleur":"#8f88f9","declencheur":[".*"],"reponse":["bonjour","rebonjour","rerebonjour","rererebonjour","on s'est déjà dit bonjour ?"],"mode":"suite","drapeau":null,"si":null,"identifiant":1580128376746,"suite":[],"lien":null,"variable":null,"temps":"","son":null,"loop":"","image":null,"tag":null,"operation":null,"bruit":null}]//fintableau

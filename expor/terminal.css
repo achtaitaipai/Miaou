@@ -1,0 +1,77 @@
+html, body{
+	height: 100vh;
+	width: 100vw;
+	margin:0;
+  	padding: 0;
+	overflow: hidden;
+	font-family: "Arial Black", Gadget, monospace;
+	}
+body{
+	background-color: #f0f0f0;
+  	display:flex;
+	justify-content: center;
+  background-color:black;
+}
+#container{
+	width: 30vw;
+  	padding: 0;
+  	height:fit-content;
+    color:green;
+}
+#title{
+  display:none;
+}
+#msgs{
+	height: 45vh;
+	display: flex; 
+  	flex-direction: column;
+	overflow-y: auto;
+}
+#msgs > :first-child {
+    margin-top: auto !important;
+}
+::-webkit-scrollbar {
+  display:none;
+}
+.bot,.usr{
+  	position:relative;
+	max-width: 100%;
+}
+.bot p,.usr p{
+  	margin:0.1em;
+  	word-break:break-word;
+  	padding:0;
+}
+.usr .usrname, .bot .botname{
+	display: none;
+}
+.bot img{
+  	  display:block;
+      width:50%;
+}
+#console{
+  margin:0;
+  padding:0;
+}
+#text{
+	word-break: break-all;
+	outline: none;
+	max-width: 100%;
+	min-height: 1em;
+
+}
+#text:empty:before{
+  content: "Enter text here...";
+  display: block;
+  opacity: 0.6;
+}
+#text:after{
+  content: " ";
+  height:1em;
+  width:10px;
+  display: inline;
+  background-color:green;
+}
+button{
+	display: none;
+}

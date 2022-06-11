@@ -1,0 +1,1 @@
+var dialogues = [{"nom":"Date","couleur":"#8f88f9","declencheur":[".*"],"reponse":["bonjour nous sommes un [JOUR] de [MOIS]--il est [HOUR]--nous sommes en [YEAR]"],"mode":"random","drapeau":null,"si":null,"identifiant":1580129978869,"suite":[],"lien":null,"variable":null,"temps":"","son":null,"loop":"","image":null,"tag":null,"operation":null,"bruit":null}]//fintableau

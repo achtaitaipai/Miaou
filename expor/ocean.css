@@ -1,0 +1,213 @@
+/*Colin Thil*/
+html {
+  margin: 0;
+  height: 100vh;
+  width: 100vW;
+  height: 100vh;
+  background-image: radial-gradient(transparent, #414b7f);
+}
+
+body {
+  position: fixed;
+  margin: 0;
+  padding: 0;
+  font-family: Brush Script MT,cursive;
+  color: #87ff8f;
+  font-weight: bold;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body:after {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  margin-left: -5vw;
+  margin-top: -5vh;
+  width: 110vW;
+  height: 50vh;
+  background-image: radial-gradient(farthest-corner at 50% 100%, #fffff7, #dbf9ff);
+  overflow: hidden;
+  pointer-events: none;
+  animation: wave 4s linear infinite alternate, rotate 2s linear infinite alternate;
+  filter: blur(2px);
+}
+
+body:before {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100vW;
+  height: 100vh;
+  background-image: radial-gradient(transparent, #31355e);
+  overflow: hidden;
+  pointer-events: none;
+
+}
+
+html:after {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100vW;
+  height: 200vh;
+  background-image: linear-gradient(transparent, rgb(255, 255, 255, 0.2), transparent);
+  overflow: hidden;
+  pointer-events: none;
+  background-repeat: repeat-y;
+  background-size: 100vw 100vh;
+  animation: motion 8s linear infinite reverse;
+}
+
+
+html:before {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100vW;
+  height: 200vh;
+  background-color: #414b7f;
+  background-image: linear-gradient(transparent, #4e598e, transparent);
+  overflow: hidden;
+  pointer-events: none;
+  background-repeat: repeat-y;
+  background-size: 100vw 20vh;
+  animation: motion 8s linear infinite;
+}
+
+#container {
+  width: fit-content;
+  padding: 0;
+  margin: 0;
+  width: 50vw;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-around;
+  align-items:space-around;
+}
+
+#title {
+  display: none;
+}
+
+#msgs {
+  margin: 0;
+  padding: 0;
+  color: #31355e;
+}
+
+.bot p,.usr {
+  display: none;
+}
+
+.bot:last-child p {
+  display: block;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+
+    font-size: 10vh;
+  animation: come 0.8s both, appear 0.4s both;
+}
+
+.bot a:not(.lastimg) {
+  display: none;
+}
+
+.bot img {
+  display:none;
+}
+
+.usr .usrname,.bot .botname {
+  display: none;
+}
+
+#console {
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+#text {
+  display:inline-block;
+  word-break: break-all;
+  max-width:90%;
+  margin:auto;
+  min-height:1em;
+  outline:none;
+  padding:0;
+  text-align: left;
+  color:white;
+}
+
+#text:empty:before {
+  content: "Enter text here...";
+  display: block;
+  opacity: 0.6;
+}
+
+button {
+  display: none;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(-0.2deg);
+  }
+
+  to {
+    transform: rotate(0.2deg);
+  }
+}
+
+@keyframes motion {
+  from {
+    margin-top: 0vh;
+  }
+
+  to {
+    margin-top: -100vh;
+  }
+}
+
+@keyframes wave {
+  from {
+    height: 50vh;
+  }
+
+  to {
+    height: 49vh;
+  }
+}
+
+@keyframes come {
+  from {
+    transform:scale(2);
+  }
+
+  to {
+    transform:scale(1);
+  }
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

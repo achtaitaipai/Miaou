@@ -1,0 +1,71 @@
+html,body{
+  width:100vw;
+        height:100vh;
+        margin:0;
+        padding:0;
+        background-color:black;
+        color:white;
+        font-family: "Arial Black", Gadget, monospace;
+}
+body{
+  display:flex;
+        justify-content:center;
+        align-items:center;
+}
+#container{
+        width:fit-content;
+        padding:0;
+        margin:0;
+        width:50vw;
+}
+#title{
+      display:none;
+    }
+#msgs{
+  margin:0;
+        padding:0;
+}
+.bot p,.usr{
+    display:none;
+  }
+.bot:last-child p{
+      display:block;
+        padding:0;
+        margin:0;
+        text-align:center;
+    }
+.bot a:not(.lastimg){
+  display:none;
+}
+.bot img{
+    display: block;
+    width:50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.usr .usrname, .bot .botname{
+  display:none;
+}
+#console{
+        padding:0;
+        margin:0;
+        text-align:center;
+}
+#text{
+        display:inline-block;
+        word-break: break-all;
+        max-width:90%;
+        margin:auto;
+        min-height:1em;
+        outline:none;
+        padding:0;
+        text-align: left;
+}
+#text:empty:before{
+      content: "Enter text here...";
+      display: block;
+      opacity: 0.6;
+}
+button{
+      display: none;
+    }

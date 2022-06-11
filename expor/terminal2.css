@@ -1,0 +1,134 @@
+/*Colin Thil*/		
+
+/*police google inutilisable hors connection*/
+@import url('https://fonts.googleapis.com/css?family=Share+Tech+Mono&display=swap');
+
+html{
+height:100vh;
+}
+
+body{
+  position:fixed;
+  margin:0;
+  padding:0;
+  display:flex;
+  justify-content:center;
+  /*police par défaut*/font-family: Andale Mono,AndaleMono,monospace;
+  /*police google inutilisable hors connection*/font-family: 'Share Tech Mono', monospace;
+  color:#87ff8f;
+  animation: blur 5s linear 2s infinite alternate;
+  text-shadow: 0px 0px 40px #c4ffc8;
+  font-weight:bold;
+  width:100vw;
+  height:100vh;
+}
+
+body:before{
+  content:"";
+  position:fixed;
+  z-index:-1;
+  top:0;
+  left:0;
+  width:100vw;
+  height:200vh;
+  background-color:black;
+  background-image:linear-gradient(transparent,#222,transparent);
+  overflow:hidden;
+  pointer-events: none;
+  background-repeat: repeat-y;
+  background-size: 100vw 100vh;
+  animation: motion 5s linear 2s infinite;
+}
+
+body:after{
+  content:"";
+  position:fixed;
+  z-index:2;
+  top:0;
+  left:0;
+  width:100vw;
+  height:100vh;
+  background-image:radial-		gradient(transparent,black);
+  overflow:hidden;
+  pointer-events: none;
+  
+}
+
+#container{
+  margin-top:30px;
+  width:90%;
+  /* La ligne suivante utilise une image en ligne supprimez-la pour une utilisation en local*/
+  background : URL('http://api.thumbr.it/whitenoise-361x370.png?background=4ea6ca00&noise=626262&density=42&opacity=15');
+  animation: noise 0.1s linear infinite;
+}
+
+#title{}
+
+#title p{
+  font-weight:bold;
+}
+
+#msgs{
+  overflow-y:auto;
+  max-height:70%;
+  width:100%;
+}
+
+::-webkit-scrollbar {
+  display:none;
+}
+
+.bot,.usr{}
+.usr{}
+.bot{}
+.bot img{
+      display:block;
+      width:30%;
+}
+
+.usr .usrname, .bot .botname{
+	display:none;
+}
+
+#console{}
+
+#text{
+	height:1em;
+	outline:none;
+  	width:100%;
+  word-break:break-all;
+}
+
+#text:empty:before{
+	content: "Enter text here...";
+	display: block;
+	opacity: 0.6;
+}
+
+button{
+	display: none;
+}
+
+@keyframes blur {
+  0%   {filter: blur(0.4px);}
+  20%  {filter: blur(0.4px);}
+  30%  {filter: blur(0.6px);}
+  40%  {filter: blur(0.4px);}
+  80%  {filter: blur(0.4px);}
+  90%  {filter: blur(0.6px);}
+  100% {filter: blur(0.4px);}
+}
+
+@keyframes motion {
+  from   {margin-top:0vh; }
+  to  {margin-top:-100vh;}
+}
+
+@keyframes noise {
+  0%   {background-position:1vh 1vh; }
+  20%  {background-position:4vh 2vh;}
+  40%  {background-position:2vh 4vh;}
+  60%  {background-position:5vh 2vh;}
+  80%  {background-position:2vh 2vh;}
+  100% {background-position:3vh 0vh;}
+}

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			body {
+				background-color: black;
+				height: 100vh;
+				margin: 0;
+				overflow: hidden;
+				color: grey;
+				font: 1.3rem Inconsolata, monospace;
+			}
+			p {
+				margin: 0;
+			}
+			#output {
+				width: 100%;
+				max-height: 100%;
+				overflow-y: scroll;
+				overflow-x: hidden;
+			}
+
+			#output::-webkit-scrollbar {
+				display: none;
+			}
+			textarea {
+				width: 100%;
+				text-decoration: none;
+				color: grey;
+				opacity: 0.9;
+				border: none;
+				font: 1.3rem Inconsolata, monospace;
+				background-color: transparent;
+				resize: none;
+				outline: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="output">
+			<p></p>
+			<textarea autofocus placeholder="message..." onkeypress="process(event, this)"></textarea>
+		</div>
+		<script type="text/javascript">
+			const sousseparateur = '--'
+			var miaou = {
+				initier: function (donnees) {
+					miaou.datas = donnees
+					miaou.dialogue = donnees
+					miaou.chemin = new Array()
+					miaou.drapeaux = ''
+					miaou.variables = []
+					miaou.compteurs = []
+					miaou.stocker = []
+					miaou.visites = []
+					miaou.derniererequete
+				},
+
+				adresse: function (id, tableau) {
+					var encours = tableau
+					var suivants = new Array()
+					var resultat = ''
+					var chemins = new Array()
+					var cheminssuivants = new Array()
+					var indice
+					while (encours.length) {
+						indice = 0
+						encours.forEach(function (boite, index) {
+							if (boite.identifiant == id) {
+								var precedent = chemins[index]
+								if (precedent == null) precedent = ''
+								else precedent += '/'
+								resultat = precedent + boite.identifiant
+							}
+							if (boite.suite.length) {
+								suivants = suivants.concat(boite.suite)
+								var precedent = chemins[index]
+								if (precedent == null) precedent = ''
+								else precedent += '/'
+								for (var i = 0; i < boite.suite.length; i++) {
+									cheminssuivants[indice + i] = precedent + boite.identifiant
+								}
+								indice += boite.suite.length
+							}
+						})
+						encours = suivants
+						suivants = new Array()
+						chemins = cheminssuivants
+						cheminssuivants = new Array()
+					}
+					return resultat.split('/')
+				},
+
+				si: function (index) {
+					if (miaou.dialogue[index].si == null) return true
+					var reg = RegExp(miaou.dialogue[index].si)
+					return reg.test(miaou.drapeaux)
+				},
+
+				sauf: function (index) {
+					if (miaou.dialogue[index].sauf == null) return true
+					var reg = RegExp(miaou.dialogue[index].sauf)
+					return !reg.test(miaou.drapeaux)
+				},
+
+				conditionner: function (condition) {
+					//var reg=RegExp('\\[.*?\\]');
+					var nomVars = [...condition['matchAll']('\\[.*?\\]')]
+					if (nomVars != null) {
+						for (var search = 0; search < nomVars.length; search++) {
+							var nomVar = nomVars[search][0].replace('[', '')
+							nomVar = nomVar.replace(']', '')
+							var Var = miaou.variables[nomVar]
+							if (Var == null) Var = 0
+							if (Var != null) condition = condition.replace(nomVars[search][0], Var)
+						}
+					}
+					return condition
+				},
+
+				condition: function (index) {
+					if (miaou.dialogue[index].si == null) return true
+					miaou.conditionner(miaou.dialogue[index].si)
+					try {
+						var condi = miaou.conditionner(miaou.dialogue[index].si)
+						if (eval(condi)) return true
+						else return false
+					} catch (error) {
+						console.error('erreure dans la condition de la boite :' + miaou.dialogue[index].nom)
+						console.error(error)
+						return true
+					}
+				},
+
+				predef: function () {
+					//date
+					var date = new Date()
+					//jour de la semaine
+					var nday = date.getDay()
+					var days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+					miaou.variables['DAY'] = days[nday]
+					var jours = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi']
+					miaou.variables['JOUR'] = jours[nday]
+					//mois
+					var nmonth = date.getMonth()
+					var months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']
+					miaou.variables['MONTH'] = months[nmonth]
+					var mois = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre']
+					miaou.variables['MOIS'] = mois[nmonth]
+					//annee
+					miaou.variables['YEAR'] = date.getFullYear()
+					miaou.variables['ANNEE'] = date.getFullYear()
+
+					//heure
+					miaou.variables['HOUR'] = date.getHours() + ':' + date.getMinutes()
+					//delai
+					if (miaou.derniererequete != null) miaou.variables['DELAY'] = Math.floor((Date.now() - miaou.derniererequete) / 1000)
+					miaou.derniererequete = Date.now()
+				},
+
+				chercher: function (recherche) {
+					//variables pré-définies
+					miaou.predef()
+
+					var retour = {
+						reponse: null,
+						index: null,
+						chemin: new Array(),
+					}
+					recherche = recherche.toLowerCase()
+					if (miaou.stocker.length) {
+						for (var vr = 0; vr < miaou.stocker.length; vr++) {
+							miaou.variables[miaou.stocker[vr]] = recherche
+						}
+					}
+
+					// /!\ VOUS RENTREZ DANS LES BOUCLES i ET J
+					for (i = 0; i < miaou.dialogue.length; i++) {
+						for (j = 0; j < miaou.dialogue[i].declencheur.length; j++) {
+							var declencheur = miaou.dialogue[i].declencheur[j].toLowerCase()
+							var reg = RegExp(declencheur)
+							if (reg.test(recherche) && miaou.condition(i)) {
+								var rand
+								//nombre de visites
+								var identifiant = miaou.dialogue[i].identifiant
+								if (miaou.visites[identifiant] == null) miaou.visites[identifiant] = 0
+								else miaou.visites[identifiant]++
+
+								//si plusieurs réponses possibles
+								if (Array.isArray(miaou.dialogue[i].reponse)) {
+									//si mode random
+									if (miaou.dialogue[i].mode == '' || miaou.dialogue[i].mode == null) {
+										rand = miaou.dialogue[i].reponse[Math.floor(Math.random() * miaou.dialogue[i].reponse.length)]
+									}
+									//si mode suite
+									else if (miaou.dialogue[i].mode == 'suite') {
+										var nr = miaou.visites[identifiant]
+										if (nr >= miaou.dialogue[i].reponse.length) nr = miaou.dialogue[i].reponse.length - 1
+										rand = miaou.dialogue[i].reponse[nr]
+									}
+									//si mode loop
+									else if (miaou.dialogue[i].mode == 'loop') {
+										var nr = miaou.visites[identifiant] % miaou.dialogue[i].reponse.length
+										rand = miaou.dialogue[i].reponse[nr]
+									}
+									//rand=miaou.dialogue[i].reponse.join(sousseparateur);
+								} else rand = miaou.dialogue[i].reponse
+
+								//chemin renvoyé pour l'interface
+								retour.chemin = [...miaou.chemin]
+								//temps
+								if (miaou.dialogue[i].temps != null) {
+									retour.temps = parseInt(miaou.dialogue[i].temps)
+								} else {
+									retour.temps = 0
+								}
+								//medias
+								retour.son = miaou.dialogue[i].son
+								retour.image = miaou.dialogue[i].image
+								retour.loop = miaou.dialogue[i].loop == 'on'
+
+								//tags et couleurs
+								retour.couleur = miaou.dialogue[i].couleur
+								if (retour.couleur == '#8f88f9') retour.couleur = null
+								retour.tag = miaou.dialogue[i].tag
+
+								//ajouter drapeaux
+								if (miaou.dialogue[i].drapeau != null) {
+									for (var dr = 0; dr < miaou.dialogue[i].drapeau.length; dr++) {
+										var nomDrapeau = miaou.dialogue[i].drapeau[dr]
+										if (miaou.variables[nomDrapeau] == null) miaou.variables[nomDrapeau] = 1
+										else miaou.variables[nomDrapeau]++
+									}
+								}
+								//variables
+								var nomVars = [...rand['matchAll']('\\[.*?\\]')]
+								if (nomVars != null) {
+									for (var search = 0; search < nomVars.length; search++) {
+										var nomVar = nomVars[search][0].replace('[', '')
+										nomVar = nomVar.replace(']', '')
+										var Var = miaou.variables[nomVar]
+										if (Var != null) rand = rand.replace(nomVars[search][0], Var)
+										else rand = rand.replace(nomVars[search][0], '')
+									}
+								}
+
+								if (miaou.dialogue[i].variable != null) {
+									for (var vr = 0; vr < miaou.dialogue[i].variable.length; vr++) {
+										miaou.stocker[vr] = miaou.dialogue[i].variable[vr]
+									}
+								} else miaou.stocker = []
+								//dialogues imbriqués
+								if (miaou.dialogue[i].suite.length) {
+									miaou.chemin.push(miaou.dialogue[i].identifiant)
+								}
+								//retour avant
+								if (miaou.dialogue[i].retour == 'on') {
+									miaou.chemin.splice(-1, 1)
+								}
+								//liens
+								if (miaou.dialogue[i].lien != null) {
+									if (miaou.dialogue[i].lien == '') {
+										//rien
+									} else if (miaou.dialogue[i].lien == 'retour') {
+										//retour
+										miaou.chemin.splice(-1, 1)
+									} else if (miaou.dialogue[i].lien == 'home') {
+										miaou.chemin = new Array()
+									} else {
+										miaou.chemin = miaou.adresse(miaou.dialogue[i].lien, miaou.datas)
+									}
+								}
+								//charger le chemin
+								miaou.objet = [...miaou.datas]
+								if (!miaou.chemin.length) miaou.chemin = new Array()
+								miaou.suivant
+								for (var n = 0; n < miaou.chemin.length; n++) {
+									for (var j = 0; j < miaou.objet.length; j++) {
+										if (miaou.objet[j].identifiant == miaou.chemin[n]) {
+											miaou.objet = miaou.objet[j].suite
+											break
+										}
+									}
+								}
+								miaou.dialogue = miaou.objet
+								console
+
+								rand = rand.split(sousseparateur)
+								retour.reponse = rand
+								retour.index = i
+								return retour
+							}
+						}
+					}
+				},
+			}
+			//tablo
+
+			miaou.initier(dialogues)
+			//créer player audio & fonction boucle
+			var sonloop = false
+			var myAudio = new Audio()
+			myAudio.addEventListener(
+				'ended',
+				function () {
+					if (sonloop) {
+						this.currentTime = 0
+						this.play()
+					}
+				},
+				false
+			)
+
+			var prochainereponse
+			var lancerson = false
+
+			function process(e) {
+				var code = e.keyCode ? e.keyCode : e.which
+				if (code == 13) {
+					e.preventDefault()
+					element = document.querySelector('p')
+					var requete = document.querySelector('textarea').value
+					var retour = miaou.chercher(requete)
+					var reponse = ''
+					var delai = 0
+					if (retour != null) {
+						reponse = retour.reponse
+						delai = retour.temps * 1000
+						//lancer fichier son en boucle ou non
+						if (retour.son != null) {
+							myAudio.src = retour.son
+							sonloop = retour.loop
+							lancerson = true
+						}
+					}
+					var txt = '<p>>>' + document.querySelector('textarea').value + '</p>'
+					element.innerHTML += txt
+					document.querySelector('textarea').value = null
+					document.getElementById('output').scrollTop = document.getElementById('output').scrollHeight
+
+					for (var i = 0; i < reponse.length; i++) {
+						var temps = delai
+						if (new Date().getTime() < prochainereponse) {
+							if (delai == 0) delai = 100
+							temps = delai + prochainereponse - new Date().getTime()
+						}
+						prochainereponse = temps + new Date().getTime()
+						var couleur = ''
+						if (retour.couleur != null) couleur = retour.couleur
+						var tag = ''
+						if (retour.tag != null) tag = retour.tag
+						setTimeout(repondre, temps, reponse[i], couleur, tag)
+					}
+				}
+			}
+
+			function repondre(reponse, couleur, tag) {
+				if (lancerson) {
+					myAudio.play()
+					lancerson = false
+				}
+				var txt = "<p class='" + tag + "'style='color:" + couleur + "'>" + reponse + '</p>'
+				element.innerHTML += txt
+				document.getElementById('output').scrollTop = document.getElementById('output').scrollHeight
+			}
+		</script>
+	</body>
+</html>

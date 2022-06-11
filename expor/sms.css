@@ -1,0 +1,140 @@
+		html, body{
+			height: 100vh;
+			width: 100vw;
+			margin:0;
+          	padding: 0;
+			overflow: hidden;
+			font-family: Verdana, monospace;
+  		}
+		body{
+			background-color: #f0f0f0;
+          	display:flex;
+			justify-content: center;
+			align-items: center;
+		}
+		#container{
+			width: 30vw;
+          	max-width:45vh;
+          	padding: 0;
+          	height:fit-content;
+		}
+		#title{
+			background-color: white;
+			color: black;
+			text-align: left;
+			padding-left: 1em;
+			height: 3vh;
+			font-weight: bold;
+          	margin:0;
+          	border-radius:1em 1em 0 0
+		}
+		#title p{
+          margin:0;
+		}
+		#msgs{
+			height: 70vh;
+			background-color: white;
+			display: flex; 
+			flex-direction: column;
+			flex-direction: flex-start;
+			padding: 5%;
+			border-top: : 10px solid grey;
+			overflow-y: auto;
+		}
+        ::-webkit-scrollbar {
+          display:none;
+        }
+		.bot,.usr{
+          	position:relative;
+			padding: 0em 0.6em ;
+			max-width: 40%;
+			border-radius: 1em;
+			margin-bottom: 1em;
+		}
+		.bot p,.usr p{
+          	margin:0.1em;
+          	word-break:break-word;
+		}
+		.usr{
+			margin-left: auto;
+			background-color: white;
+			border-top-right-radius: 0;
+         	border:0.05em solid #009ccf;
+          	color:black;
+		}
+		.usr:before{
+          	position: absolute;
+            right: -0.4em;
+            top: -0.05em;
+            bottom: auto;
+        	content: " ";    	
+  			border: 0.4em solid;
+  			border-color: #009ccf transparent transparent transparent;  
+		}
+		.usr:after{
+          	position: absolute;
+            right: -0.3em;
+            top: 0.0em;
+            bottom: auto;
+        	content: " ";    	
+  			border: 0.4em solid;
+  			border-color: white transparent transparent transparent;  
+		}
+		.bot{
+          	margin-right:auto;
+			background-color: white;
+			border-top-left-radius: 0;
+         	border:0.05em solid #009ccf;
+          	color:black;
+		}
+		.bot:before{
+          	position: absolute;
+            left: -0.4em;
+            top: -0.05em;
+            bottom: auto;
+        	content: " ";    	
+  			border: 0.4em solid;
+  			border-color: #009ccf transparent transparent transparent;  
+		}
+		.bot:after{
+          	position: absolute;
+            left: -0.3em;
+            top: 0.0em;
+            bottom: auto;
+        	content: " ";    	
+  			border: 0.4em solid;
+  			border-color: white transparent transparent transparent;  
+		}
+		.bot img{
+			margin-top: 1em;
+			max-width: 100%;
+			border:1px solid blue;
+		}
+		.usr .usrname, .bot .botname{
+			display: none;
+		}
+		#console{
+			background-color: white;
+			border-top: 1px solid grey;
+			border-radius: 1%;
+			padding: 1em;
+          	border-radius:0 0 1em 1em;
+          	grid-area:console;
+		}
+		#text{
+          	margin:auto;
+			word-break: break-all;
+			outline: none;
+			width: 90%;
+			border-bottom: 1px solid #009cff;
+			min-height: 1em;
+
+		}
+		#text:empty:before{
+          content: "Enter text here...";
+          display: block;
+          opacity: 0.6;
+        }
+        button{
+        	display: none;
+        }

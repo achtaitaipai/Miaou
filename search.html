@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+</head>
+<body>
+
+</body>
+<script type="text/javascript">
+	function search(template, marker1,marker2) {
+		var fin=false;
+		var txt=template;
+		var retour=new Array();
+		while(!fin){
+			var result=[];
+		    var i1 = txt.indexOf( marker1 );
+		    var i2 = txt.indexOf( marker2 );
+		    if(i1==-1||i2==-1){
+		    	fin=true;
+		    	break;
+		    }else{
+			    i1+=marker1.length;
+			    result.entre=txt.substring(i1,i2);
+			    i1-=marker1.length;
+			    i2+=marker2.length;
+			    result.tout=txt.substring(i1,i2);
+			    txt=txt.substring(i2,txt.length)
+			    retour.push(result);
+			}
+		}
+		if(retour.length)return retour;
+		else return false;
+
+	}
+	console.log(search("blkdlsfflsdflr((23))nez((34))jknsqk","((","))"));
+</script>
+</html>

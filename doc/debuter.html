@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Documentation</title>
+	<meta charset="utf-8">
+	<link href="https://fonts.googleapis.com/css?family=Josefin+Sans:400,700&amp;display=swap" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<ul id="menu">
+		<li><a href="index.html">Général</a></li><!--
+	--><li ><a href="tutoriel.html">Tutoriel</a></li><!--
+	--><li class="actuel"><a href="debuter.html">Bases</a></li><!--
+	--><li><a href="approfondir.html">Approfondir</a></li>
+	</ul>
+<div id="container">
+		<div class="chapitre 0" id="principe">
+		<h2>Principe général</h2>
+		<p>Miaou repose sur un système de boîtes. Lorsque l'utilisateur envoie une phrase au bot, Miaou vérifie chaque boîte jusqu'à en trouver une qui convient. Puis renvoie la answer de celle-ci.</p>
+	</div>
+	<div class="chapitre 1" id="navigation">
+		<h2>Navigation</h2>
+		<p>Pour modifier une boîte cliquez dessus et modifiez les paramètres qui s'affichent à droite</p>
+		<p>Pour déplacer une boîte vous pouvez la glisser et déposer à l'endroit voulu. L'ordre des boîtes a son importance : lorsque plusieurs boîtes sont susceptibles de se déclencher ce sera toujours la première qui se déclenchera.</p>
+		<p>Pour créer une nouvelle boîte cliquez sur le bouton <b>+</b> situé à la suite des boîtes ou pressez la touche <b>n</b>.</p>
+		<p>Pour supprimer une boîte : sélectionnez la, puis cliquez sur le bouton poubelle situé en bas du formulaire ou pressez la touche <b>suppr</b>.</p>
+		<p>Vous pouvez rentrer dans une boîte en double-cliquant dessus.</p>
+		<p>Le bandeau au dessus des boîtes vous permet de savoir à quel niveau de l'arborescence vous vous situez.</p>
+	</div>
+	<div class="chapitre 2" id="trigger">
+		<h2>Titre et couleurs</h2>
+		<p>Le titre et la couleur des boîtes n'ont aucune incidence sur le fonctionnement du bot, ils permettent simplement d'organiser les boîtes.</p>
+		<h2>Trigger</h2>
+		<p>Trigger: Correspond à ce qui déclenchera la boîte.</p>
+		<p>Lorsque l'utilisateur envoie du texte, le bot vérifie chaque boîte jusqu'à en trouver une dont le trigger fasse partie du texte de l'utilistateur.</p>
+		<p>Une boîte ayant pour trigger :"bonjour" se déclenchera pour "bonjour", "machin te passe le bonjour" et "blablablabonjourblablabla"</p>
+		<p>Les trigger utilisent les expressions régulières, ce qui signifie que les caractères suivants : <b>[\^$.|?*+(){}</b> doivent être précédé d'un <b>\</b> pour être utilisés normalement.</p>
+		<p>En contre-partie il est possible d'utiliser les super-pouvoirs des <a href="https://openclassrooms.com/fr/courses/1916641-dynamisez-vos-sites-web-avec-javascript/1920128-les-expressions-regulieres-partie-1-2"> expressions régulières</a>. 
+			<ul>
+				<li>"<b>.*</b>" désigne n'importe qu'elle suite de caractères. Ainsi, le trigger :"<b>Comment .* va</b>" se déclenchera pour "comment ça va ?" et"comment tu vas".</li>
+				<li>"<b>^</b>" signifie que ce qui suit doit être au début du texte envoyé par l'utilisateur. Par exemple : "<b>^bonjour</b>" se déclenchera pour "bonjour", mais pas pour "machin te passe le bonjour".</li>
+				<li>"<b>$</b>" signifie que ce qui précède doit être à la fin du texte envoyé par l'utilisateur. Par exemple : "<b>bonjour$</b>" se déclenchera pour "bonjour", mais pas pour "bonjour à toi"</li>
+			</ul>
+		<p>Il est possible de mettre plusieurs Trigger à la même boîte en les espaçant par "<b> & </b>"</p>
+
+	</div>
+	<div class="chapitre 3" id="answer">
+		<h2>Answer</h2>
+		<p>Answer correspond à ce que répondra la boîte lorsqu'elle est déclenchée.</p>
+		<h3>plusieurs answer</h3>
+		<p>Il est possible d'écrire plusieurs answer en les espaçant par "<b> & </b>"</p>
+		<p>La answer sera choisie en fonction du mode :<ul>
+			<li>aléatoire: le bot choisit une answer au hasard</li>
+			<li>loop : le bot choisira la première answer, puis la seconde et ainsi de suite jusqu'à revenir à la première lorsque toutes les answer auront été lues</li>
+			<li>à la suite : le bot choisira la première answer, puis la seconde etc et restera sur la dernière lorsque toutes les answer auront été lues</li>
+		</ul></p>
+		<h3>plusieurs messages et temps</h3>
+		<p>Chaque answer peut être constituée de plusieurs messages, pour celà espacer les messages avec :"<b>--</b>"</p>
+		<p>Vous pouvez préciser un temps d'attente avant que le bot ne réponde, par exemple pour que le bot attende trois secondes mettez ((3)) à la fin du message.</p>
+		<p>Pour que le bot ne réponde pas écrivez "<b>NOTHING</b>".</p>
+	</div>
+</div>
+</body>
+</html>

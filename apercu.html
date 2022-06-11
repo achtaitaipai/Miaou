@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+
+	<style type="text/css">
+		
+		html, body{
+			height: 100vh;
+			width: 100vw;
+			margin,padding: 0;
+			overflow: hidden;
+			font-family: Verdana, monospace;
+  		}
+		body{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background-color: black;
+		}
+		#container{
+			border: 1px solid black;
+			width: 30vw;
+			margin,padding: 0;
+			background-color: #fefefe;
+			border-radius: 3%;
+
+		}
+		#title{
+			box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			-webkit-box-sizing: border-box;
+			border-bottom: 1px solid grey;
+			width: 100%;
+			color: black;
+			text-align: left;
+			padding-left: 1em;
+			height: 5vh;
+			font-weight: bold;
+		}
+		#title p{
+			line-height: 90px
+			height 90px;
+		}
+		#msgs{
+			height: 70vh;
+			display: flex; 
+			flex-direction: column;
+			flex-direction: flex-start;
+			padding: 5%;
+			border-top: : 10px solid grey;
+			overflow-y: auto;
+			margin-bottom: 1em;
+		}
+		.bot,.usr{
+			padding: 0em 0.6em ;
+			max-width: 40%;
+			margin-bottom: 1em;
+		}
+		.usr{
+			margin-left: auto;
+			background-color: #4cd964;
+			border-radius: 0.5em 0 0.5em 0.5em;
+		}
+		.bot{
+			background-color: #f0f0f0;
+			border-radius: 0 0.5em 0.5em 0.5em;
+		}
+		.bot img{
+			max-width: 100%;
+			border:1px solid blue;
+		}
+		.usr .usrname, .bot .botname{
+			display: none;
+		}
+		#console{
+			border-top: 1px solid grey;
+			display: flex;
+			justify-content: space-around;
+			border-radius: 1%;
+			padding: 1em;
+
+		}
+		#text{
+			word-break: break-all;
+			outline: none;
+			width: 90%;
+			border-bottom: 2px solid #009cff;
+			height: 1em;
+
+		}
+		#envoyer{
+			background-color: red;
+		}
+		
+	</style>
+</head>
+<body>
+<div id="container">
+	<div id="title">
+		<p>no title</p></div>
+	<div id="msgs">
+	<div class="usr"><p> <span class="usrname">user : </span>bonjour</p></div><div class="bot "><p><span class="botname">miaou : </span>bonjour</p></div><div class="usr"><p> <span class="usrname">user : </span>comment va ? </p></div><div class="bot "><p><span class="botname">miaou : </span>comme un chat-rme et toi ?</p></div><div class="usr"><p> <span class="usrname">user : </span>super </p></div><div class="bot "><p><span class="botname">miaou : </span>super</p></div></div>
+	<div id="console">
+		<div id="text" contenteditable="true"></div>
+	</div>
+</div>
+</body>
+</html>

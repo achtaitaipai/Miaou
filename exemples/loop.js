@@ -1,0 +1,1 @@
+var dialogues = [{"nom":"1 2 3","couleur":"#8f88f9","declencheur":[".*"],"reponse":["métro","boulot","dodo"],"mode":"loop","drapeau":null,"si":null,"identifiant":1580142110436,"suite":[],"lien":null,"variable":null,"temps":"","son":null,"loop":"","image":null,"tag":null,"operation":null,"bruit":null}]//fintableau

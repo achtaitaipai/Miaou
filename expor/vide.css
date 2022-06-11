@@ -1,0 +1,28 @@
+html{}
+body{}
+#container{}
+#title{}
+#title p{
+	font-weight:bold;
+}
+#msgs{}
+.bot,.usr{}
+.usr{}
+.bot{}
+.bot img{}
+.usr .usrname, .bot .botname{
+	font-style:italic;
+}
+#console{}
+#text{
+	height:1em;
+  	outline:none;
+}
+#text:empty:before{
+  content: "Enter text here...";
+  display: block;
+  opacity: 0.6;
+}
+button{
+	display: none;
+}
