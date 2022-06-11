@@ -1,9 +1,12 @@
 # Getting started
 
+[french version](./fr/premiers-pas.md)
+
 ---
 
 ## Other resources
 
+- [Miaou](https://achtaitaipai.github.io/Miaou/)
 - [Intro](../README.md)
 - [Main concepts](./main-concepts.md)
 - [Complete guide](./complete-guide.md)

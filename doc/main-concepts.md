@@ -1,9 +1,12 @@
-# Main concepts# Getting started
+# Main concepts
+
+[french version](./fr/principes-fondamentaux.md)
 
 ---
 
 ## Other resources
 
+- [Miaou](https://achtaitaipai.github.io/Miaou/)
 - [Intro](../README.md)
 - [Getting started](./getting-started.md)
 - [Complete guide](./complete-guide.md)

@@ -1,9 +1,12 @@
 # Complete guide
 
+[french version](./fr/guide-complet.md)
+
 ---
 
 ## Other resources
 
+- [Miaou](https://achtaitaipai.github.io/Miaou/)
 - [Intro](../README.md)
 - [Getting started](./getting-started.md)
 - [Main concepts](./main-concepts.md)
