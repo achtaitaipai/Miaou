@@ -52,42 +52,7 @@
             <li><a data=".tags">tags</a></li>
           </ul>
         </li><!--
-        --><li class="levelun fichier editmode"><a class="volet editmode examples">examples</a>
-          <ul>
-            <li><a>main</a>
-              <ul>
-                <li><a data="pileouface.js" class="exemple">mode random</a></li>
-                <li><a data="loop.js" class="exemple">mode loop</a></li>
-                <li><a data="rebonjour.js" class="exemple">mode à la suite</a></li>
-                <li><a data="sousreponses.js" class="exemple">sous-réponses</a></li>
-                <li><a data="temps.js" class="exemple">temps de réponse</a></li>
-              </ul>
-            </li>
-            <li><a>variables</a>
-              <ul>
-                <li><a data="questions.js" class="exemple">string</a></li>
-                <li><a data="test.js" class="exemple">flags</a></li>
-              </ul>
-            </li>
-            <li><a>conditions</a>
-              <ul>
-                <li><a data="pasbonjour.js" class="exemple">dire bonjour</a></li>
-              </ul>
-            </li>
-            <li><a>variables pré-définies</a>
-              <ul>
-                <li><a data="date.js" class="exemple">date</a></li>
-                <li><a data="perroquet.js" class="exemple">perroquet</a></li>
-              </ul>
-            </li>
-            <li><a>liens</a>
-              <ul>
-                <li><a data="liens.js" class="exemple">basic</a></li>
-              </ul>
-            </li>
-          </ul>
-        </li><!--
-        --><li class="levelun fichier editmode"><a href="doc/" target="_blank" class="volet editmode doc">doc</a></li>
+        --><li class="levelun fichier editmode"><a href="https://github.com/achtaitaipai/Miaou/README.md" target="_blank" class="volet editmode doc">doc</a></li>
       </ul>
     </div>
 
@@ -420,30 +385,30 @@ remain on the last one until all answers have been read</p>
 <script type="text/javascript">
   var tableau =[
     {
-    'nom' : 'bonjour',
-    'declencheur':["bonjour","salut","coucou"], 
-    'reponse':"bonjour",
+    'nom' : 'hello',
+    'declencheur':["hello","hi","hey","good day"], 
+    'reponse':"hello",
     'identifiant':'1578141280007',
     "suite":[],
     },
     {
-    'nom' : 'comment va',
-    'declencheur':["comment.*va"], 
-    'reponse':"comme un chat-rme et toi ?",
+    'nom' : 'how are you',
+    'declencheur':["how.*you"], 
+    'reponse':"wonderfully well and you?",
     'identifiant':'1578141347801',
     'suite':[
           {
-            'nom' : 'bien',
-            'declencheur' :["super"], 
-            'reponse' : 'super',
+            'nom' : 'well',
+            'declencheur' :["well"], 
+            'reponse' : 'I am delighted to hear it',
             'identifiant':'1578141347807',
             "suite":[],
             "lien":"retour",
           },
           {
-            'nom' : 'bof',
-            'declencheur' :["bof"], 
-            'reponse' : 'navré',
+            'nom' : 'not well',
+            'declencheur' :["not.*well"], 
+            'reponse' : 'I am sorry to hear it...',
             'identifiant':'1578141347857',
             "suite":[],
             "lien":"retour",
@@ -452,15 +417,15 @@ remain on the last one until all answers have been read</p>
     },
     {
     'nom' : 'présentation',
-    'declencheur':["qui.*tu","comment.*appelle","quel.*nom","quel.*prénom"], 
+    'declencheur':["who.*you","ho.*w.*cal.*led","what.*name","what.*fir.*am"], 
     'reponse':"miaou",
     'identifiant':'1578141359349',
     "suite":[],
     },
     {
-    'nom' : 'rien',
+    'nom' : 'nothing',
     'declencheur':[".*"], 
-    'reponse':"je n'ai pas compris",
+    'reponse':"I did not understand.",
     'identifiant':'1578141369219',
     "suite":[]
     }
