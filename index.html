@@ -398,18 +398,18 @@ remain on the last one until all answers have been read</p>
     'identifiant':'1578141347801',
     'suite':[
           {
-            'nom' : 'well',
-            'declencheur' :["well"], 
-            'reponse' : 'I am delighted to hear it',
-            'identifiant':'1578141347807',
-            "suite":[],
-            "lien":"return",
-          },
-          {
             'nom' : 'not well',
             'declencheur' :["not.*well"], 
             'reponse' : 'I am sorry to hear it...',
             'identifiant':'1578141347857',
+            "suite":[],
+            "lien":"return",
+          },
+          {
+            'nom' : 'well',
+            'declencheur' :["well"], 
+            'reponse' : 'I am delighted to hear it',
+            'identifiant':'1578141347807',
             "suite":[],
             "lien":"return",
           },
@@ -452,5 +452,11 @@ var theme=lirefichier("expor/vide.css");
   donnees.initier(tableau); 
   actulisteboites();
   selectionner($('#listeboites li').eq(0));
+
+  window.addEventListener('beforeunload', function (e) {
+    const confirmationMessage = 'If you leave before saving, your changes will be lost.'
+    e.returnValue = confirmationMessage
+    return confirmationMessage
+  })
 </script>
 </html>
