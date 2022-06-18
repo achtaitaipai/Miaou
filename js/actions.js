@@ -397,10 +397,10 @@ function naviguer(indice) {
   donnees.modifierchemin(indice);
   //afficher le nouveau chemin
   $("#chemin").html(donnees.cheminvisible);
+  //montrer / cacher la bar de navigation en fonction du chemin
   donnees.cheminvisible === "/"
     ? $("#location").hide()
     : $("#location").css("display", "flex");
-  console.log(donnees.cheminvisible);
   //représenter les boites selon la position
   actulisteboites();
 }

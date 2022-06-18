@@ -593,6 +593,9 @@ li.aide {
 	padding: 2px;
 }
 
+.aide a {
+	color: inherit;
+}
 /* !!! dans intercationsouris.js -> $("#formulaireCSS").css("display","flex"); !!! */
 #formulaireCSS {
 	z-index: 2;
