@@ -397,6 +397,10 @@ function naviguer(indice) {
   donnees.modifierchemin(indice);
   //afficher le nouveau chemin
   $("#chemin").html(donnees.cheminvisible);
+  donnees.cheminvisible === "/"
+    ? $("#location").hide()
+    : $("#location").css("display", "flex");
+  console.log(donnees.cheminvisible);
   //représenter les boites selon la position
   actulisteboites();
 }
