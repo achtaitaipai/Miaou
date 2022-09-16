@@ -42,7 +42,7 @@ et enfin j'essaye mon chatbot en cliquant sur **PLAY** et miracle : lorsque je l
 
 Tout ça est bien sympathique, mais il y a mille façons de dire bonjour. Mon chatbot aura l'air bien bête s'il ne sait pas répondre à salut par exemple.
 
-our résoudre ce problème majeur sans devoir créer une boîte pour chaque façon de dire bonjour, il faut que ma boîte ait plusieurs **trigger**. Je modifie donc mon **trigger** comme suit :
+Pour résoudre ce problème majeur sans devoir créer une boîte pour chaque façon de dire bonjour, il faut que ma boîte ait plusieurs **trigger**. Je modifie donc mon **trigger** comme suit :
 
 |  property   |                    value                     |
 | :---------: | :------------------------------------------: |
